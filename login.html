@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="ticket-template.css">
+    <title>Login</title>
+</head>
+<body class = "background">
+    <a href="index.html">
+        <img src="./assets/logo.png" class="Logo" >
+    </a>
+    
+    <div class="corp">
+        <form class="card" action="auth.php" method="POST" id="accountLogin">
+            <h2>Login</h2>
+            <div class="login-box" id="login">
+                <input type="text" class="textzone" name="login" placeholder="Login" id="login-textzone">
+                <div id="login_error" class="error-text titanic">Veuillez renseigner votre login.</div><br><br>
+                
+                <input type="password" class="textzone" name="password" placeholder="Password" id="password">
+                                <div id="password_error" class="error-text titanic">Veuillez renseigner votre mot de passe.</div>
+                <br><br>
+                <button type="button"class="reset" id="resetPswd">
+                    <p>Mot de passe oublié ?</p>
+                </button>
+            </div>
+            
+
+
+            <div class="NewPswd-block" id="NewPswd">
+                    <input type="password" class="textzone" name="nouveauPswd" placeholder="nouveau mot de passe" id="nouveauPswd">
+                                        <div id="newPswd_error" class="error-text titanic">Veuillez renseigner votre nouveau mot de passe.</div>
+<br><br>
+                    <input type="password" class="textzone" name="Confirmerpassword" placeholder="confirmer le mot de passe" id="confirmPswd">
+                                        <div id="confirmPswd_error" class="error-text titanic">Veuillez confirmer votre mot de passe.</div>
+<br><br>
+            </div>
+            <button type="submit" class="enter" >Se connecter</button>
+            
+        </form>
+    </div>
+    <script src="script.js"></script>
+   
+
+</body>
+</html>

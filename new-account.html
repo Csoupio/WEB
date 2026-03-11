@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="ticket-template.css">
+</head>
+<body class = "background">
+    <a href="index.html">
+        <img src="./assets/logo.png" class="Logo" >
+    </a>
+    
+    <div class="corp">
+        <form class="card" action="" method="POST" id="accountCreate">
+        <h2>Créer un compte</h2>
+
+        <input id="firstName" type="text" class="textzone" name="Prénom" placeholder="Prénom">
+        <div id="firstName_error" class="error-text titanic">Veuillez renseigner votre prénom.</div>
+        <br><br>
+
+        <input id="lastName" type="text" class="textzone" name="Nom" placeholder="Nom">
+        <div id="lastName_error" class="error-text titanic">Veuillez renseigner votre nom.</div><br><br>
+        
+
+        <input id="email" type="email" class="textzone" name="email" placeholder="Email">
+                <div id="email-creator_error" class="error-text titanic">Veuillez renseigner un email valide.</div>
+        <br><br>
+
+        <input id="password" type="password" class="textzone" name="password" placeholder="Mot de passe">        
+        <div id="password_error" class="error-text titanic">Veuillez renseigner un mot de passe valide.</div>
+<br><br>
+
+        <button id="submit-creator_create_password" type="submit" class="enter" >Enregister</button>
+    </form>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
