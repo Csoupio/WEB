@@ -54,7 +54,7 @@ $ticketsDuProjet = $stmtT->fetchAll();
                 <div id="dropdownMenu" class="dropdown-content">
                     <a href="projets-list.php" class="menu-item">Mes projets</a> 
                     <a href="clients.php" class="menu-item">Dashbord</a>
-                    <a href="tickets.php" class="menu-item">Se déconnecter</a>
+                    <a href="index.html" class="menu-item">Se déconnecter</a>
                 </div>
                 <script src="script.js"></script>
                 

@@ -1,47 +1,147 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="ticket-template.css">
     <title>Login</title>
 </head>
-<body class = "background">
+<body class="background">
     <a href="index.html">
-        <img src="./assets/logo.png" class="Logo" >
+        <img src="./assets/logo.png" class="Logo">
     </a>
-    
+
     <div class="corp">
-        <form class="card" action="auth.php" method="POST" id="accountLogin">
-            <h2>Login</h2>
-            <div class="login-box" id="login">
-                <input type="text" class="textzone" name="login" placeholder="Login" id="login-textzone">
-                <div id="login_error" class="error-text titanic">Veuillez renseigner votre login.</div><br><br>
-                
-                <input type="password" class="textzone" name="password" placeholder="Password" id="password">
-                                <div id="password_error" class="error-text titanic">Veuillez renseigner votre mot de passe.</div>
+
+        <!-- === FORMULAIRE LOGIN === -->
+        <form class="card" action="auth.php" method="POST" id="accountLogin" style="min-width:320px;">
+            <h2>Connexion</h2>
+
+            <!-- Messages dynamiques (succès / erreur) -->
+            <div id="flash-message" style="display:none; margin-bottom:12px;"></div>
+
+            <div class="login-box" id="login-block">
+                <label style="font-weight:bold;">Email</label><br>
+                <input type="text" class="textzone" name="login" placeholder="Email" id="login-textzone">
+                <div id="login_error" class="error-text titanic">Veuillez renseigner votre login.</div>
                 <br><br>
-                <button type="button"class="reset" id="resetPswd">
-                    <p>Mot de passe oublié ?</p>
+
+                <label style="font-weight:bold;">Mot de passe</label><br>
+                <input type="password" class="textzone" name="password" placeholder="Mot de passe" id="password">
+                <div id="password_error" class="error-text titanic">Veuillez renseigner votre mot de passe.</div>
+                <br><br>
+
+                <button type="button" class="reset" id="resetPswd">
+                    Mot de passe oublié ?
                 </button>
             </div>
-            
 
-
+            <!-- === BLOC RESET MOT DE PASSE === -->
+            <!-- Ce bloc partage le même formulaire — action sera changée en JS -->
             <div class="NewPswd-block" id="NewPswd">
-                    <input type="password" class="textzone" name="nouveauPswd" placeholder="nouveau mot de passe" id="nouveauPswd">
-                                        <div id="newPswd_error" class="error-text titanic">Veuillez renseigner votre nouveau mot de passe.</div>
-<br><br>
-                    <input type="password" class="textzone" name="Confirmerpassword" placeholder="confirmer le mot de passe" id="confirmPswd">
-                                        <div id="confirmPswd_error" class="error-text titanic">Veuillez confirmer votre mot de passe.</div>
-<br><br>
-            </div>
-            <button type="submit" class="enter" >Se connecter</button>
-            
-        </form>
-    </div>
-    <script src="script.js"></script>
-   
+                <p style="font-size:13px; color:#555; margin-bottom:8px;">
+                    Entrez votre email et choisissez un nouveau mot de passe.
+                </p>
 
+                <label style="font-weight:bold;">Nouveau mot de passe</label><br>
+                <input type="password" class="textzone" name="nouveauPswd" placeholder="Nouveau mot de passe" id="nouveauPswd">
+                <div id="newPswd_error" class="error-text titanic">Veuillez renseigner votre nouveau mot de passe.</div>
+                <br><br>
+
+                <input type="password" class="textzone" name="Confirmerpassword" placeholder="Confirmer le mot de passe" id="confirmPswd">
+                <div id="confirmPswd_error" class="error-text titanic">Les mots de passe ne correspondent pas.</div>
+                <br><br>
+            </div>
+
+            <button type="submit" class="enter" id="submitBtn">Se connecter</button>
+
+            <p style="margin-top:12px; font-size:14px;">
+                Pas encore de compte ? <a href="new-account.html">Créer un compte</a>
+            </p>
+        </form>
+
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const flash  = document.getElementById('flash-message');
+
+        // --- Affichage des messages flash ---
+        if (params.has('registered')) {
+            flash.style.display = 'block';
+            flash.innerHTML = '<div style="background:#d4edda; color:#155724; padding:10px; border-radius:8px; border:1px solid #c3e6cb;">✅ Compte créé ! Vous pouvez vous connecter.</div>';
+        }
+        if (params.has('error')) {
+            flash.style.display = 'block';
+            flash.innerHTML = `<div class="error-text">❌ ${decodeURIComponent(params.get('error'))}</div>`;
+        }
+        if (params.has('reset')) {
+            flash.style.display = 'block';
+            flash.innerHTML = '<div style="background:#d4edda; color:#155724; padding:10px; border-radius:8px; border:1px solid #c3e6cb;">✅ Mot de passe mis à jour ! Connectez-vous.</div>';
+        }
+        if (params.has('reset_error')) {
+            flash.style.display = 'block';
+            const msgs = params.get('reset_error').split('|');
+            flash.innerHTML = msgs.map(m => `<div class="error-text" style="margin-bottom:4px;">⚠️ ${m}</div>`).join('');
+        }
+
+        // --- Bouton "Mot de passe oublié" ---
+        const resetBtn  = document.getElementById('resetPswd');
+        const newPswdBlock = document.getElementById('NewPswd');
+        const loginBlock   = document.getElementById('login-block');
+        const submitBtn    = document.getElementById('submitBtn');
+        const form         = document.getElementById('accountLogin');
+
+        let isReset = false;
+
+        resetBtn.addEventListener('click', function () {
+            isReset = true;
+            newPswdBlock.classList.add('show');
+            resetBtn.style.display = 'none';
+            submitBtn.textContent = 'Réinitialiser';
+            // Changer l'action du formulaire vers reset-password.php
+            form.action = 'reset-password.php';
+        });
+
+        // --- Validation avant envoi ---
+        form.addEventListener('submit', function (e) {
+            let valid = true;
+            // Réinitialiser toutes les erreurs
+            document.querySelectorAll('.error-text').forEach(el => el.classList.add('titanic'));
+
+            const loginVal = document.getElementById('login-textzone').value.trim();
+            const passVal  = document.getElementById('password').value.trim();
+
+            if (!isReset) {
+                // Validation login normal
+                if (!loginVal) {
+                    document.getElementById('login_error').classList.remove('titanic');
+                    valid = false;
+                }
+                if (!passVal) {
+                    document.getElementById('password_error').classList.remove('titanic');
+                    valid = false;
+                }
+            } else {
+                // Validation reset
+                if (!loginVal) {
+                    document.getElementById('login_error').classList.remove('titanic');
+                    valid = false;
+                }
+                const newP  = document.getElementById('nouveauPswd').value;
+                const confP = document.getElementById('confirmPswd').value;
+                if (!newP || newP.length < 6) {
+                    document.getElementById('newPswd_error').classList.remove('titanic');
+                    valid = false;
+                }
+                if (newP !== confP) {
+                    document.getElementById('confirmPswd_error').classList.remove('titanic');
+                    valid = false;
+                }
+            }
+
+            if (!valid) e.preventDefault();
+        });
+    </script>
 </body>
 </html>
